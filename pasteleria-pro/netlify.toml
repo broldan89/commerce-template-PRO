@@ -1,11 +1,7 @@
 [build]
+  base = "pasteleria-pro"
   command = "npm run build"
   publish = ".next"
-
-[[redirects]]
-  from = "/*"
-  to = "/.next/server/app/index.html"
-  status = 200
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
