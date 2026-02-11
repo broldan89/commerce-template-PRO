@@ -1,35 +1,57 @@
 "use client";
-import { useCart } from "@/lib/store";
 
-export default function ProductCard({ product }: { product: any }) {
-  // Traemos la función addItem de nuestra tienda global
-  const addItem = useCart((state) => state.addItem);
+import { useCartStore } from "@/store/useCartStore";
+import Image from "next/image";
+
+interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  image_url?: string;
+}
+
+export default function ProductCard({ product }: { product: Product }) {
+  const addToCart = useCartStore((state) => state.addToCart);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full">
-      <div className="h-48 bg-slate-200">
-        <img
-          src={product.image_url || "https://via.placeholder.com/300"}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
+    <div className="group border rounded-2xl p-4 bg-white hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+      {/* Imagen del producto */}
+      <div className="relative h-48 w-full mb-4 overflow-hidden rounded-xl bg-slate-100">
+        {product.image_url ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full text-slate-300">
+            🍰
+          </div>
+        )}
       </div>
 
-      <div className="p-4 flex flex-col flex-grow">
-        <h3 className="font-semibold text-lg">{product.name}</h3>
-        <p className="text-slate-500 text-sm line-clamp-2 mb-4">
-          {product.description}
+      {/* Información */}
+      <div className="flex-grow">
+        <h3 className="font-bold text-slate-800 text-lg mb-1">
+          {product.name}
+        </h3>
+        <p className="text-sm text-slate-500 line-clamp-2 mb-4">
+          {product.description || "Pastelería artesanal hecha con amor."}
         </p>
+      </div>
 
-        <div className="mt-auto flex items-center justify-between">
-          <span className="text-xl font-bold">${product.price}</span>
-          <button
-            onClick={() => addItem(product)}
-            className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 active:scale-95 transition-all"
-          >
-            Agregar
-          </button>
-        </div>
+      {/* Precio y Botón */}
+      <div className="flex items-center justify-between mt-auto pt-4 border-t">
+        <span className="text-xl font-bold text-slate-900">
+          ${product.price.toLocaleString()}
+        </span>
+        <button
+          onClick={() => addToCart(product)}
+          className="bg-pink-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-pink-700 active:scale-95 transition-all shadow-sm"
+        >
+          Agregar
+        </button>
       </div>
     </div>
   );
