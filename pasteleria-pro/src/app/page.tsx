@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/ProductCard";
 
+export const dynamic = "force-dynamic";
 export default async function Home() {
   // Pedimos los productos a la base de datos
   const { data: products, error } = await supabase
