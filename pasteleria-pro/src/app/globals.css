@@ -8,6 +8,5 @@
 }
 
 body {
-  background-color: white;
-  color: #0f172a;
+  @apply bg-white text-slate-900;
 }
